@@ -1,0 +1,14 @@
+version: '3'
+services:
+  gosco:
+    image: docker.ghiasi.me:5000/go-cloud:0.1-1
+    hostname: go_cloud
+    container_name: go_cloud
+    environment:
+      - TZ=Asia/Tehran
+      - GO_CLOUD_CORE_PORT=9090
+      - GO_CLOUD_CORE_SERVER_NAME=vm1
+      - GO_CLOUD_CORE_MAX_MEM_USAGE=55
+      - GO_CLOUD_CORE_MAX_CPU_USAGE=80
+    ports:
+      - '9090:9090'

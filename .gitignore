@@ -1,0 +1,16 @@
+.idea
+main
+./static/*
+static
+./static
+./banners
+./banners/*
+banners
+images
+images/*
+./images
+./search
+./search/*
+search
+maps/*.png
+cache/*
