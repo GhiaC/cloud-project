@@ -32,6 +32,9 @@ func main() {
 	e.GET("/GetMemUsage", func(c echo.Context) error {
 		return c.String(http.StatusOK, handler.GetMemAvg())
 	})
+	e.GET("/UnderPressure", func(c echo.Context) error {
+		return c.String(http.StatusOK, handler.UnderPressure())
+	})
 	e.GET("/WhatsYourName", func(c echo.Context) error {
 		return c.String(http.StatusOK, config.Conf.Core.ServerName)
 	})

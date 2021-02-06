@@ -17,6 +17,9 @@ core:
   port: 9090
   max_cpu_usage: 80
   max_mem_usage: 55
+  mem_factor: 1
+  cpu_factor: 1
+  hit_cpu_mem_factor: 200
 `)
 
 type ConfYaml struct {
@@ -25,10 +28,13 @@ type ConfYaml struct {
 
 // SectionCore is sub section of config.
 type SectionCore struct {
-	ServerName  string `yaml:"server_name"`
-	Port        int    `yaml:"port"`
-	MaxCpuUsage int    `yaml:"max_cpu_usage"`
-	MaxMemUsage int    `yaml:"max_mem_usage"`
+	ServerName      string `yaml:"server_name"`
+	Port            int    `yaml:"port"`
+	MaxCpuUsage     int    `yaml:"max_cpu_usage"`
+	MaxMemUsage     int    `yaml:"max_mem_usage"`
+	CpuFactor       int    `yaml:"cpu_factor"`
+	MemFactor       int    `yaml:"mem_factor"`
+	HitCpuMemFactor int    `yaml:"hit_cpu_mem_factor"`
 }
 
 // LoadConf load config from file and read in environment variables that match
@@ -74,6 +80,9 @@ func LoadConf(confPath string) (ConfYaml, error) {
 	conf.Core.Port = viper.GetInt("core.port")
 	conf.Core.MaxMemUsage = viper.GetInt("core.max_mem_usage")
 	conf.Core.MaxCpuUsage = viper.GetInt("core.max_cpu_usage")
+	conf.Core.CpuFactor = viper.GetInt("core.cpu_factor")
+	conf.Core.MemFactor = viper.GetInt("core.mem_factor")
+	conf.Core.HitCpuMemFactor = viper.GetInt("core.hit_cpu_mem_factor")
 	return conf, nil
 }
 

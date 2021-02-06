@@ -107,6 +107,13 @@ func (h *Handler) GetMemAvg() string {
 	return strconv.Itoa(h.percentageMemoryUsage)
 }
 
+func (h *Handler) UnderPressure() string {
+	if config.Conf.Core.CpuFactor*int(h.AvgCpuUsage)+config.Conf.Core.MemFactor*h.percentageMemoryUsage > config.Conf.Core.HitCpuMemFactor {
+		return "yes"
+	}
+	return "no"
+}
+
 func (h *Handler) GetCpuAvg() string {
 	return strconv.Itoa(int(h.AvgCpuUsage))
 }

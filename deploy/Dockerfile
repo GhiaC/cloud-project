@@ -1,5 +1,6 @@
 FROM golang:latest
 
+# go build -ldflags="-w -s" main.go
 # docker build -t docker.ghiasi.me:5000/go-cloud:0.1-1 -f deploy/Dockerfile .
 
 RUN echo "Asia/Tehran" > /etc/timezone-
