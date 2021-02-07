@@ -1,0 +1,12 @@
+version: '3'
+services:
+  haproxy:
+    image:  haproxy:1.7
+    container_name: haproxy
+    environment:
+    - TZ=Asia/Tehran
+    ports:
+    - 80:80
+    volumes:
+    - ./haproxy.cfg/:/usr/local/etc/haproxy/haproxy.cfg
+    
