@@ -3,10 +3,12 @@ services:
   haproxy:
     image:  docker.ghiasi.me/haproxy:alpine
     container_name: haproxy
+    network_mode: host
+    restart: always
     environment:
     - TZ=Asia/Tehran
     ports:
-    - 80:80
+    - 9191:9191
     volumes:
     - ./haproxy.cfg/:/usr/local/etc/haproxy/haproxy.cfg
     
