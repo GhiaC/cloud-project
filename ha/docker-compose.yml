@@ -1,7 +1,7 @@
 version: '3'
 services:
   haproxy:
-    image:  haproxy:1.7
+    image:  docker.ghiasi.me/haproxy:alpine
     container_name: haproxy
     environment:
     - TZ=Asia/Tehran
