@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ghiac/go-commons/prometheus"
 	"github.com/labstack/echo/v4"
 	"gogs.ghiasi.me/masoud/cloud-project/config"
 	handler2 "gogs.ghiasi.me/masoud/cloud-project/handler"
@@ -38,5 +39,6 @@ func main() {
 	e.GET("/WhatsYourName", func(c echo.Context) error {
 		return c.String(http.StatusOK, config.Conf.Core.ServerName)
 	})
+	prometheus.NewPrometheus(7777)
 	e.Logger.Fatal(e.Start(":" + strconv.Itoa(config.Conf.Core.Port)))
 }
