@@ -26,8 +26,10 @@ func main() {
 	h := &Handler{
 		ShutdownTime: 20,
 		mutex: map[string]*sync.Mutex{
-			"serverStatus": &sync.Mutex{},
-			"ruleStatus":   &sync.Mutex{},
+			"serverStatus":  &sync.Mutex{},
+			"underPressure": &sync.Mutex{},
+			"mem":           &sync.Mutex{},
+			"ruleStatus":    &sync.Mutex{},
 		},
 	}
 
@@ -283,18 +285,24 @@ func (h *Handler) memChecker() {
 				req, err := http.NewRequest("GET", url, nil)
 				resp, err := client.Do(req)
 				if err != nil {
+					h.mutex["mem"].Lock()
 					h.memUsage[serverName] = 0
+					h.mutex["mem"].Unlock()
 					time.Sleep(5 * time.Second)
 					continue
 				}
 				body, err := ioutil.ReadAll(resp.Body)
 				defer resp.Body.Close()
 				if err != nil {
+					h.mutex["mem"].Lock()
 					h.memUsage[serverName] = 0
+					h.mutex["mem"].Unlock()
 					continue
 				}
 				cpu, _ := strconv.Atoi(string(body))
+				h.mutex["mem"].Lock()
 				h.memUsage[serverName] = cpu
+				h.mutex["mem"].Unlock()
 				time.Sleep(1 * time.Second)
 			}
 		}()
@@ -314,21 +322,27 @@ func (h *Handler) underPressureChecker() {
 				req, err := http.NewRequest("GET", url, nil)
 				resp, err := client.Do(req)
 				if err != nil {
+					h.mutex["underPressure"].Lock()
 					h.underPressure[serverName] = false
+					h.mutex["underPressure"].Unlock()
 					time.Sleep(5 * time.Second)
 					continue
 				}
 				body, err := ioutil.ReadAll(resp.Body)
-				defer resp.Body.Close()
+				_ = resp.Body.Close()
 				if err != nil {
+					h.mutex["underPressure"].Lock()
 					h.underPressure[serverName] = false
+					h.mutex["underPressure"].Unlock()
 					continue
 				}
+				h.mutex["underPressure"].Lock()
 				if string(body) == "yes" {
 					h.underPressure[serverName] = true
 				} else {
 					h.underPressure[serverName] = false
 				}
+				h.mutex["underPressure"].Unlock()
 				time.Sleep(1 * time.Second)
 			}
 		}()

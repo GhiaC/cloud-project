@@ -3,6 +3,7 @@ services:
   gosco:
     image: docker.ghiasi.me:5000/go-cloud:0.1-2
     hostname: go_cloud
+    restart: always
     container_name: go_cloud
     environment:
       - TZ=Asia/Tehran
@@ -23,6 +24,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
   grafana:
     image: docker.ghiasi.me:5000/grafana:5.2.2
+    restart: always
     container_name: grafana
     links:
       - prometheus
